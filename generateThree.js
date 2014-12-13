@@ -68,6 +68,7 @@ function init() {
     container.appendChild( info );
 
     $("#pourHeading").append("<div id='subHeading'></div>");
+    $("#pourHeading").append("<div id='acc'></div>");
 
     // Set up camera
     camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -131,3 +132,13 @@ function render() {
     cube.rotation.z = -dataRolly;
     renderer.render( scene, camera );
 }
+
+var ax, ay, az;
+
+window.addEventListener('devicemotion', function(e) {
+		ax = e.accelerationIncludingGravity.x;
+		ay = -e.accelerationIncludingGravity.y;
+		az = -e.accelerationIncludingGravity.z;
+		$("#acc").replaceWith("<div id='acc'>" + ax + ',' + ay + ',' + az + "</div>");
+
+	});
