@@ -6,6 +6,15 @@ Generate 3D render using serial data from IMU
 
 'use strict';
 
+// Get accel data
+var ax = 0, ay = 0, az = 0;
+window.addEventListener('devicemotion', function(e) {
+		ax = e.accelerationIncludingGravity.x;
+		ay = -e.accelerationIncludingGravity.y;
+		az = -e.accelerationIncludingGravity.z;
+		$("#acc").replaceWith("<div id='acc'>" + ax + ',' + ay + ',' + az + "</div>");
+});
+
 // Declare required variables
 var dataRollx = 0;
 var dataRolly = 0;
@@ -25,7 +34,8 @@ var windowHalfY = window.innerHeight / 2;
 
 //Connect to socket.io
 var serverIP = "localhost";
-var socket = io.connect(serverIP + ':5000');
+//var socket = io.connect(serverIP + ':5000');
+var socket = io.connect();
 console.log('socket connected to: ' + serverIP);
 
 // Start reading IMU data
@@ -68,6 +78,7 @@ function init() {
     container.appendChild( info );
 
     $("#pourHeading").append("<div id='subHeading'></div>");
+    $("#pourHeading").append("<div id='acc'></div>");
 
     // Set up camera
     camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -77,31 +88,25 @@ function init() {
     scene = new THREE.Scene();
 
     // Create cube
-    var geometry = new THREE.BoxGeometry( 200, 200, 200 );
-
+    var geometry = new THREE.BoxGeometry( 100, 100, 100 );
     for ( var i = 0; i < geometry.faces.length; i += 2 ) {
-
         var hex = Math.random() * 0xffffff;
         geometry.faces[ i ].color.setHex( hex );
         geometry.faces[ i + 1 ].color.setHex( hex );
-
     }
-
     var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } );
-
     cube = new THREE.Mesh( geometry, material );
-    cube.position.y = 150;
+    cube.position.y = -80;
     scene.add( cube );
 
-    // Create background plane
-    var geometry = new THREE.PlaneBufferGeometry( 400, 200 );
-    geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
+    // Create santa
+    var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+    var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } );
+    cube = new THREE.Mesh( geometry, material );
+    cube.position.y = 80;
+    scene.add( cube );
 
-    var material = new THREE.MeshBasicMaterial( { color: 0xe0e0e0, overdraw: 0.5 } );
-
-    plane = new THREE.Mesh( geometry, material );
-    scene.add( plane );
-
+    
     renderer = new THREE.CanvasRenderer();
     renderer.setClearColor( 0xf0f0f0 );
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -126,8 +131,11 @@ function animate() {
 }
 
 function render() {
+    cube.translateX(ax);
     cube.rotation.x = -dataRollx;
     cube.rotation.y = -dataRollz;
     cube.rotation.z = -dataRolly;
     renderer.render( scene, camera );
 }
+
+
