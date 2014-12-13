@@ -9,13 +9,27 @@
                     overflow: hidden;
                 }
         </style>
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+        <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-resource/angular-resource.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
 	</head>
-	<body>
+	<body ng-app="santadodge">
+
+        <div class="container">
+            <div class="row" ng-view=""></div>
+        </div>
+
 		<script src="lib/three.min.js"></script>
         <script src="lib/Projector.js"></script>
         <script src="lib/CanvasRenderer.js"></script>
         <script src="lib/jquery-2.1.1.min.js"></script>
         <script src="lib/socket.io.js"></script>
         <script src="generateThree.js"></script>
+        <script src="app/scripts/app.js"></script>
+        <script src="app/scripts/controllers/main.js"></script>
+        <script src="app/scripts/controllers/game.js"></script>
 	</body>
 </html>

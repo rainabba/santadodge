@@ -1,7 +1,11 @@
-<div class="jumbotron" ng-controller="MainCtrl">
-  <form name="user">
-    <h1>Santadodge</h1>
-    <input ng-model="name" required type="text" minlength="3" placeholder="your name is?">
-    <a class="btn btn-success" href="#/shooter" ng-show="user.$valid && user.$dirty">Done</a>
+<div class="jumbotron center" ng-controller="MainCtrl">
+  <form class="center" name="user">
+    <div class="center">
+      <h1 class="text-center">Santadodge</h1>
+      <div class="col-xs-1 col-xs-offset-5 center">
+      <input ng-model="name" required type="text" minlength="3" placeholder="What's your name?">
+      <br><a class="btn btn-success" href="#/game" ng-show="user.$valid && user.$dirty">Done</a>
+    </div>
+    </div>
   </form>
 </div>

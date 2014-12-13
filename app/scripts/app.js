@@ -16,15 +16,15 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
+        templateUrl: 'app/views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/shooter', {
-        templateUrl: 'views/shooter.html',
-        controller: 'ShooterCtrl'
+      .when('/game', {
+        templateUrl: 'app/views/game.html',
+        controller: 'GameCtrl'
       })
       .when('/dodger', {
-        templateUrl: 'views/dodger.html',
+        templateUrl: 'app/views/dodger.html',
         controller: 'DodgerCtrl'
       })
       .otherwise({
