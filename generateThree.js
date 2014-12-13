@@ -34,7 +34,8 @@ var windowHalfY = window.innerHeight / 2;
 
 //Connect to socket.io
 var serverIP = "localhost";
-var socket = io.connect(serverIP + ':5000');
+//var socket = io.connect(serverIP + ':5000');
+var socket = io.connect();
 console.log('socket connected to: ' + serverIP);
 
 // Start reading IMU data
