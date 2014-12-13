@@ -26,11 +26,12 @@ var accuracy = 2;
 var orderOfMag = (Math.PI/180);
 var container;
 var camera, scene, renderer;
-var cube, plane;
+var cube, plane, santa, present;
 var targetRotation = 0;
 var targetRotationOnMouseDown = 0;
 var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
+var windowHalfY = window.innerHeight / 2,
+    presents = [];
 
 //Connect to socket.io
 var serverIP = "localhost";
@@ -101,10 +102,12 @@ function init() {
 
     // Create santa
     var geometry = new THREE.BoxGeometry( 100, 100, 100 );
-    var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } );
-    cube = new THREE.Mesh( geometry, material );
-    cube.position.y = 80;
-    scene.add( cube );
+    var material = new THREE.MeshNormalMaterial();
+    santa = new THREE.Mesh( geometry, material );
+    santa.position.y = 350;
+    scene.add( santa );
+    
+
 
     
     renderer = new THREE.CanvasRenderer();
@@ -113,6 +116,7 @@ function init() {
     container.appendChild( renderer.domElement );
 
     window.addEventListener( 'resize', onWindowResize, false );
+    createPresent();
 }
 
 function onWindowResize() {
@@ -130,12 +134,38 @@ function animate() {
         render();
 }
 
+
 function render() {
     cube.translateX(ax);
+    presents.forEach( function(o) {
+        o.translateY(-2);
+    });
     cube.rotation.x = -dataRollx;
     cube.rotation.y = -dataRollz;
     cube.rotation.z = -dataRolly;
     renderer.render( scene, camera );
+    playerHit();
 }
 
+var threshold = 50;
 
+function playerHit() {
+    presents.forEach( function(o, i) {
+        var yDiff = Math.abs(o.position.y - cube.position.y);
+        var xDiff = Math.abs(o.position.x - cube.position.x);
+        if (yDiff < threshold && xDiff < threshold) {
+         console.log('HIT:', o);
+         scene.remove(o);
+            presents.splice(i, 1);
+        }
+    });
+}
+    // Create present
+function createPresent() {
+    var geometry = new THREE.BoxGeometry( 30, 30, 30 );
+    var material = new THREE.MeshNormalMaterial();
+    present = new THREE.Mesh( geometry, material );
+    present.position.y = 350;
+    scene.add( present );
+    presents.push(present);
+}
