@@ -1,0 +1,7 @@
+<div class="jumbotron" ng-controller="MainCtrl">
+  <form name="user">
+    <h1>Santadodge</h1>
+    <input ng-model="name" required type="text" minlength="3" placeholder="your name is?">
+    <a class="btn btn-success" href="#/shooter" ng-show="user.$valid && user.$dirty">Done</a>
+  </form>
+</div>
