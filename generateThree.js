@@ -32,12 +32,17 @@ var targetRotationOnMouseDown = 0;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2,
     presents = [];
+var score = 0;
 
 //Connect to socket.io
 var serverIP = "localhost";
 //var socket = io.connect(serverIP + ':5000');
-var socket = io.connect();
+var socket = io();
 console.log('socket connected to: ' + serverIP);
+socket.on('throw', function(data) {
+    createPresent();
+
+});
 
 // Start reading IMU data
 runSocket();
@@ -80,6 +85,7 @@ function init() {
 
     $("#pourHeading").append("<div id='subHeading'></div>");
     $("#pourHeading").append("<div id='acc'></div>");
+    $("#pourHeading").append("<div id='score'>Score: 0</div>");
 
     // Set up camera
     camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -147,7 +153,7 @@ function render() {
     playerHit();
 }
 
-var threshold = 50;
+var threshold = 70;
 
 function playerHit() {
     presents.forEach( function(o, i) {
@@ -155,6 +161,7 @@ function playerHit() {
         var xDiff = Math.abs(o.position.x - cube.position.x);
         if (yDiff < threshold && xDiff < threshold) {
          console.log('HIT:', o);
+         scoreHit();
          scene.remove(o);
             presents.splice(i, 1);
         }
@@ -168,4 +175,9 @@ function createPresent() {
     present.position.y = 350;
     scene.add( present );
     presents.push(present);
+}
+
+function scoreHit() {
+    score++;
+    $('#score').replaceWith("<div id='score'>Score: " + score + "</div>");
 }
