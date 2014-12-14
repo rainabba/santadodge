@@ -15,6 +15,10 @@ io.sockets.on('connection',connectionCB)
 
 
 function connectionCB (socket) {
-	
-	
+socket.on('throw',
+                function(data) {
+                        io.emit('throw', {});
+                }
+);
+
 }
